@@ -9,22 +9,24 @@ export enum Element {
   Physical, // 物理
 }
 
+// 进阶属性
 export type AdvanceStats = Omit<Stats, 'atk' | 'hp' | 'def'>;
 
+// BUFF
 export type BuffEffect = (params: IBuffEffectParams) => StatsBonus;
 
 export interface IBuffEffectParams {
-  statsBonus: StatsBonus;
-  character: Character;
-  weapon: Weapon;
-  artifactSets: ArtifactSet;
+  statsBonus: StatsBonus; // 增益
+  character: Character; // 角色
+  weapon: Weapon; // 武器
+  artifactSets: ArtifactSet; // 圣遗物
 }
 
 export interface Character {
-  name: string;
-  level: number;
-  characterStat: Stats;
-  buffEffects: BuffEffect[];
+  name: string; // 角色名称
+  level: number; // 角色等级
+  characterStat: Stats; // 角色基础面板
+  buffEffects: BuffEffect[]; // BUFF
 }
 
 export interface Stats {
@@ -81,20 +83,28 @@ export interface Stats {
  * @interface Move
  */
 export interface Move {
-  dmgType: Element,
-  moveType: MoveType,
-  rate: number;
-  buffEffects: BuffEffect[];
+  dmgType: Element, // 元素伤害类型
+  moveType: MoveType, // 招式类型 
+  rate: number; // 倍率
+  buffEffects: BuffEffect[]; // BUFF
 }
 
+
+/**
+ * 招式类型
+ *
+ * @export
+ * @enum {number}
+ */
 export enum MoveType {
-  NormalHit,
-  ChargedHit,
-  PlungingHit,
-  ElementalSkill,
-  ElementalBurst,
+  NormalHit, // 普通攻击
+  ChargedHit, // 重攻击
+  PlungingHit, // 下落攻击
+  ElementalSkill, // 元素战技
+  ElementalBurst, // 元素爆发（大招）
 }
 
+// 属性加成
 export type StatsBonus = {
   atkRate: number; // 攻击力百分比提升
   atkFlat: number; // 攻击力提升
@@ -104,23 +114,45 @@ export type StatsBonus = {
   defFlat: number; // 防御力提升
 } & AdvanceStats;
 
+
+/**
+ * 武器
+ *
+ * @export
+ * @interface Weapon
+ */
 export interface Weapon {
-  atk: number;
-  subStat: Partial<StatsBonus>;
-  buffEffects: BuffEffect[];
+  atk: number; // 攻击力
+  subStat: Partial<StatsBonus>; //副属性
+  buffEffects: BuffEffect[]; // BUFF
 }
+
 
 export type Artifact = Partial<StatsBonus>
 
+
+/**
+ * 圣遗物
+ *
+ * @export
+ * @interface ArtifactSet
+ */
 export interface ArtifactSet {
-  flower: Artifact;
-  plume: Artifact;
-  sands: Artifact;
-  goblet: Artifact;
-  circlet: Artifact;
-  buffEffects: BuffEffect[];
+  flower: Artifact; // 花
+  plume: Artifact; // 羽
+  sands: Artifact; // 沙
+  goblet: Artifact; // 杯
+  circlet: Artifact; // 冠
+  buffEffects: BuffEffect[];  // BUFF
 }
 
+
+/**
+ * 敌人
+ *
+ * @export
+ * @interface Enemy
+ */
 export interface Enemy {
   level: number;
   physicalResistance: number; // 物理抗性
@@ -132,6 +164,14 @@ export interface Enemy {
   electroResistance: number; // 雷元素抗性
   geoResistance: number; // 岩元素抗性
 }
+
+
+/**
+ * 伤害计算公式参数
+ *
+ * @export
+ * @interface IGetDMGParams
+ */
 export interface IGetDMGParams {
   talentRate: number; // 技能倍率
   atk: number; // 攻击力
@@ -149,14 +189,21 @@ export interface IGetDMGParams {
   otherEffect?: (dmg: number) => number; // 其他乘区，目前已知的只有行秋的4命
 }
 
+
+/**
+ * Calculator构造函数参数
+ *
+ * @export
+ * @interface ICalculatorParams
+ */
 export interface ICalculatorParams {
-  character: Character;
-  weapon: Weapon;
-  artifactSet: ArtifactSet;
-  enemy: Enemy;
-  move: Move;
-  buffEffects: BuffEffect[];
-  reactionCoeff: number;
+  character: Character; // 角色
+  weapon: Weapon; // 武器
+  artifactSet: ArtifactSet; // 圣遗物
+  enemy: Enemy; // 敌人
+  move: Move; // 招式
+  buffEffects: BuffEffect[];  // 额外 Buff
+  reactionCoeff: number; // 反应系数
 }
 
 export type NumberObject = { [key: string]: number };
